@@ -126,8 +126,8 @@ public final class SpotifyApiSingleton {
 		try {
 			acc = acr.execute();
 			setAcc(acc);
-			setTimer(new Timer());
-			getTimer().schedule(managementOfTime, 3500000);;
+//			setTimer(new Timer());
+//			getTimer().schedule(managementOfTime, 3500000);;
 		} catch (ParseException | SpotifyWebApiException | IOException e) {
 			log.error(e.getMessage());
 		}
@@ -148,12 +148,12 @@ public final class SpotifyApiSingleton {
 		return getAcc();
 	}
 	
-	static TimerTask managementOfTime = new TimerTask() {
-		@Override
-		public void run() {
-			AuthorizationCodeRefresh.authorizationCodeRefresh();
-		}
-	};
+//	static TimerTask managementOfTime = new TimerTask() {
+//		@Override
+//		public void run() {
+//			AuthorizationCodeRefresh.authorizationCodeRefresh();
+//		}
+//	};
 
 	
 
