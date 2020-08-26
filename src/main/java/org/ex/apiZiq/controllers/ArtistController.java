@@ -33,6 +33,7 @@ import com.wrapper.spotify.model_objects.credentials.AuthorizationCodeCredential
 import com.wrapper.spotify.model_objects.specification.Artist;
 import com.wrapper.spotify.model_objects.specification.Paging;
 import com.wrapper.spotify.requests.authorization.authorization_code.AuthorizationCodeRefreshRequest;
+import com.wrapper.spotify.requests.data.artists.GetArtistRequest;
 import com.wrapper.spotify.requests.data.search.simplified.SearchArtistsRequest;
 
 @Service
@@ -43,15 +44,9 @@ public class ArtistController {
 	
 	private static final Logger log = LogManager.getLogger(ApiZiqApplication.class);
 	
-//	private static String accesToken = "BQDnN4TcccVP8PTrSt_V190KRuNgy-m2f9Y34nRgGrRkNHZrRBcHpgAA9qhhNEPSeoJxGHXSpzw6QhYnuVcLOMZ1fubofgoLX64nHTmgmEES01RMmucXFr1P6axWdNpAbrcJkYtkrizC5XeQxXJPj4DSRx1rlNQr5r-VU8u2ddXbehcWCeUjuw";
-//	private static String nameArtist = "Cattle decapitation";
-	
-//	private static SpotifyApi sApi = new SpotifyApi.Builder().build();
-//	private static SearchArtistsRequest sAR = sApi.searchArtists(nameArtist).build();
-	private static SearchArtistsRequest sAR;
-//	private static String clientId;
-//	private static String clientSecret;
-//	private static AuthorizationCodeRefreshRequest acrr = sApi.authorizationCodeRefresh().build();
+	private static SearchArtistsRequest searchArtistReq;
+	private static GetArtistRequest getArtistReq;
+	private ObjectMapper pagingMapper = new ObjectMapper();
 	
 	private String index = "spotifyMusic";	// spotify
 	
@@ -59,14 +54,6 @@ public class ArtistController {
 	
 	RestHighLevelClient c = new RestHighLevelClient(
 			RestClient.builder(new HttpHost("localhost", 9200, "http")));
-
-//	public ArtistController() {	}
-//	@Autowired
-//	public ArtistController(@Value("${spotify.clientId}") String _clientId, 
-//								@Value("${spotify.clientSecret}") String _clientSecret) {
-//		clientId = _clientId;
-//		clientSecret = _clientSecret;
-//	}
 
 	@PostMapping("/create")
 	public String save(@RequestBody org.ex.apiZiq.models.Artist artist) {
@@ -83,34 +70,31 @@ public class ArtistController {
 	}
 	
 	@GetMapping("/searchByName")
-	public String searchByName(@RequestParam("name") String name) {
-//		log.info("call findByName");		
-		sAR = SpotifyApiSingleton.getInstance().searchArtists(name).build();
+	public String searchByName(@RequestParam("name") String name) {	
+		searchArtistReq = SpotifyApiSingleton.getInstance().searchArtists(name).build();
 		try {
-//			log.info("dans le try avant req...");
-//			log.info(sAR.getJson());
-//			log.info(sAR.getBody());
-//			log.info(sAR.getHeaders());
-//			log.info(sAR.getUri());
-			Paging<Artist> ap = sAR.execute();
-			log.info("Total d'artistes en retour => " + ap.getTotal());
-			log.info(ap);
-//			log.info("fin de findByName...");
-//			return sAR.getJson();
-			ObjectMapper pagingMapper = new ObjectMapper();
-			String jsonRes = pagingMapper.writeValueAsString(ap.getItems());
-			return jsonRes;
+			Paging<Artist> ap = searchArtistReq.execute();
+//			ObjectMapper pagingMapper = new ObjectMapper();
+//			String jsonRes = this.pagingMapper.writeValueAsString(ap.getItems());
+//			return jsonRes;
+			return this.pagingMapper.writeValueAsString(ap.getItems());
 		} catch (ParseException | SpotifyWebApiException | IOException e) {
 			log.debug(e.getMessage());
 			return null;
 		}
-//		return "searchByName => " + name;
 	}
 	
 	@GetMapping("/searchById")
-	public String searchById(@RequestParam("id") long id) {
+	public String searchById(@RequestParam("id") String id) {
 		log.info("call findById");
-		return "searchById => " + id;
+		getArtistReq = SpotifyApiSingleton.getInstance().getArtist(id).build();
+		try {
+			final Artist artist = getArtistReq.execute();
+			return this.pagingMapper.writeValueAsString(artist);
+		} catch (ParseException | SpotifyWebApiException | IOException e) {
+			log.debug(e.getMessage());
+			return null;
+		}
 	}
 	
 //	@GetMapping("/callback")
