@@ -2,8 +2,6 @@ package org.ex.apiZiq;
 
 import java.net.URI;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.ex.apiZiq.models.SpotifyApiSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,7 +13,7 @@ import com.wrapper.spotify.requests.authorization.authorization_code.Authorizati
 @Service
 public class AuthorizationCodeUri {
 	
-	private static final Logger log = LogManager.getLogger(AuthorizationCodeUri.class);
+//	private static final Logger log = LogManager.getLogger(AuthorizationCodeUri.class);
 	
 	private static String clientId;
 	private static String clientSecret;
@@ -43,13 +41,6 @@ public class AuthorizationCodeUri {
 				.build();
 		
 		URI uri = acur.execute();
-//		log.info("URI => " + uri.toString());
-//		log.info(uri.getAuthority());
-//		log.info(acur.hashCode());
-//		log.info(acur.getHttpManager());
-//		log.info(acur.getUri());
-//		log.info(acur.getBody());
-//		log.info(acur.getHeaders());
 		return uri.toString();
 	}
 	

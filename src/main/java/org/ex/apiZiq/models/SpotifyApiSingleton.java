@@ -3,16 +3,10 @@ package org.ex.apiZiq.models;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import org.apache.hc.core5.http.ParseException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.ex.apiZiq.ApiZiqApplication;
-import org.ex.apiZiq.AuthorizationCodeRefresh;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.exceptions.SpotifyWebApiException;
