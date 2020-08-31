@@ -104,7 +104,16 @@ public class BrowseController {
 	
 	@GetMapping("/getRecommendation")
 	public String getRecommendation() {
-		getRecommendationReq = SpotifyApiSingleton.getInstance().getRecommendations().build();
+//      .limit(10)
+//      .market(CountryCode.SE)
+//      .max_popularity(50)
+//      .min_popularity(10)
+//      .seed_artists("0LcJLqbBmaGUft1e9Mm8HV")
+//      .seed_genres("electro")
+//      .seed_tracks("01iyCAUm8EvOFqVWYJ3dVX")
+//      .target_popularity(20)
+		getRecommendationReq = SpotifyApiSingleton.getInstance().getRecommendations()
+				.seed_genres("metal").build();
 		try {
 			final Recommendations r = getRecommendationReq.execute();
 			return this.pagingMapper.writeValueAsString(r);
