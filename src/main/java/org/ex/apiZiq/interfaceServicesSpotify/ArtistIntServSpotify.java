@@ -6,6 +6,6 @@ public interface ArtistIntServSpotify {
 	
 	public String searchArtistById(String id);
 	
-	public String getAllAbumsByIdArtist(String id);
+	public String getAllAbumsByIdArtist(String id, String typeAlbum);
 	
 }

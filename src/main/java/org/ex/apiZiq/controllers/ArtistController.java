@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 @RestController
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ArtistController {
 	
-//	private static final Logger log = LogManager.getLogger(ApiZiqApplication.class);
+	private static final Logger log = LogManager.getLogger(ArtistController.class);
 	
 	private ArtistIntServSpotify artistSpotify = new ArtistServSpotifyImpl();
 	
@@ -57,8 +59,8 @@ public class ArtistController {
 	}
 	
 	@GetMapping("/getAlbumsByIdArtist")
-	public String getAlbumByIdArtist(@RequestParam("id") String id) {
-		return this.artistSpotify.getAllAbumsByIdArtist(id);
+	public String getAlbumByIdArtist(@RequestParam("id") String id, @RequestParam("typeAlbum") String typeAlbum) {
+		return this.artistSpotify.getAllAbumsByIdArtist(id, typeAlbum);
 	}
 	
 }

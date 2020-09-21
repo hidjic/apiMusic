@@ -26,6 +26,9 @@ public class ArtistServSpotifyImpl implements ArtistIntServSpotify {
 	private static GetArtistRequest getArtistReq;
 	private static GetArtistsAlbumsRequest getArtistAlbumReq;
 	
+	private int limitAlbum = 50;	// limit => min = 1; max = 50
+	private int firstElement = 0;	// offset => array commence a 0
+	
 	private ObjectMapper pagingMapper = new ObjectMapper();
 	
 	@Override
@@ -53,10 +56,16 @@ public class ArtistServSpotifyImpl implements ArtistIntServSpotify {
 	}
 
 	@Override
-	public String getAllAbumsByIdArtist(String id) {
-		getArtistAlbumReq = SpotifyApiSingleton.getInstance().getArtistsAlbums(id).build();
+	public String getAllAbumsByIdArtist(String id, String typeAlbum) {
+		getArtistAlbumReq = SpotifyApiSingleton.getInstance().getArtistsAlbums(id)
+				.market(CountryCode.FR)
+				.limit(limitAlbum)	// limit => min = 1; max = 50
+				.offset(firstElement)	// offset => array commence a 0
+				.album_type(typeAlbum)	// album - single - appears_on - compilation
+				.build();
 		try {
-			final Paging<AlbumSimplified> asp = getArtistAlbumReq.execute();			
+			final Paging<AlbumSimplified> asp = getArtistAlbumReq.execute();
+			log.info("getTotal => " + asp.getTotal());
 			return this.pagingMapper.writeValueAsString(asp.getItems());
 		} catch (ParseException | SpotifyWebApiException | IOException e) {
 			log.debug(e.getMessage());

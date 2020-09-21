@@ -45,6 +45,7 @@ public final class SpotifyApiSingleton {
 		}else {
 			if(clientId == null) {
 				log.info("clientId => null...");
+				getAuthorizationCodeRefreshRequest();
 			}else {
 				log.info("singleton deja existante...");
 			}
